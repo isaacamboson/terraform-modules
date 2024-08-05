@@ -24,14 +24,12 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_instance" "server" {
-  # count                  = var.stack_controls["ec2_create"] == "Y" ? 1 : 0
+  count                  = var.stack_controls["ec2_create"] == "Y" ? 1 : 0
   ami                    = var.ami_id
-  # instance_type          = var.instance_type
   instance_type          = var.EC2_Components["instance_type"]
   vpc_security_group_ids = [aws_security_group.stack-sg.id]
   user_data              = data.template_file.bootstrap.rendered
   key_name               = aws_key_pair.Stack_KP.key_name
-  # subnet_id              = var.subnet_ids[count.index]
   subnet_id              = var.subnet_ids[0]
   root_block_device {
     volume_type           = var.EC2_Components["volume_type"]
@@ -40,12 +38,7 @@ resource "aws_instance" "server" {
     encrypted             = var.EC2_Components["encrypted"]
   }
 
-  tags = {
-    Name = "Application-Server"
-  }
-
-  # tags = merge({Name = "${local.ServerPrefix != "" ? local.ServerPrefix : "Application_Server_Aut"}"}, var.resource_tags)
-  # tags = merge({Name = "${local.ServerPrefix != "" ? local.ServerPrefix : "Application_Server_Aut_"}${count.index}"}, module.CORE-INFO.all_resource_tags)  
+  tags = merge({Name = "${local.ServerPrefix != "" ? local.ServerPrefix : "Application_Server_Aut_"}${count.index}"}, var.resource_tags) 
 
 }
 
