@@ -1,0 +1,12 @@
+MODULES/EC2-BASE/.terraform
+MODULES/EC2-BASE/.terraform.lock.hcl
+MODULES/EC2-BASE/my_key
+environments/dev/us-east-1/.terraform
+environments/dev/us-east-1/.terraform.lock.hcl
+environments/dev/us-east-1/my_key
+environments/dev/us-east-1/terraform.tfvars
+environments/dev/us-west-2/.terraform
+environments/dev/us-west-2/.terraform.lock.hcl
+environments/dev/us-west-2/my_key
+environments/dev/us-west-2/terraform.tfvars
+.terraform
