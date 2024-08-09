@@ -2,17 +2,24 @@ variable "AWS_ACCESS_KEY" {}
 variable "AWS_SECRET_KEY" {}
 variable "AWS_REGION" {}
 
-
 variable "environment" {
   default = "dev"
 }
 
-variable "default_vpc_id" {
-  default = "vpc-01f9d081aa9bbf727"
+variable "OwnerEmail" {
+  default = "isaacamboson@gmail.com"
 }
 
 variable "system" {
   default = "Retail Reporting"
+}
+
+variable "backup" {
+  default = "yes"
+}
+
+variable "default_vpc_id" {
+  default = "vpc-01f9d081aa9bbf727"
 }
 
 variable "subsystem" {
@@ -30,20 +37,12 @@ variable "subnets_cidrs" {
   ]
 }
 
-variable "instance_type" {
-  default = "t2.micro"
-}
-
 variable "PATH_TO_PRIVATE_KEY" {
   default = "my_key"
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
   default = "my_key.pub"
-}
-
-variable "OwnerEmail" {
-  default = "isaacamboson@gmail.com"
 }
 
 variable "AMIS" {
@@ -91,6 +90,3 @@ variable "EC2_Components" {
   }
 }
 
-variable "backup" {
-  default = "yes"
-}

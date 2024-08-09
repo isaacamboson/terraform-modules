@@ -2,37 +2,14 @@ locals {
   ServerPrefix = ""
 }
 
-# Declare Key Pair
-resource "aws_key_pair" "Stack_KP" {
-  key_name   = "stackkp"
-  public_key = file(var.PATH_TO_PUBLIC_KEY)
-}
-
-resource "aws_security_group" "stack-sg" {
-  vpc_id      = var.default_vpc_id
-  name        = "Stack-WebDMZ"
-  description = "Stack IT Security Group For CliXX System"
-}
-
-resource "aws_security_group_rule" "ssh" {
-  security_group_id = aws_security_group.stack-sg.id
-  type              = "ingress"
-  protocol          = "tcp"
-  from_port         = 22
-  to_port           = 22
-  cidr_blocks       = ["0.0.0.0/0"]
-}
-
 resource "aws_instance" "server" {
-  # count                  = var.stack_controls["ec2_create"] == "Y" ? 1 : 0
-  ami                    = var.ami_id
-  # instance_type          = var.instance_type
-  instance_type          = var.EC2_Components["instance_type"]
-  vpc_security_group_ids = [aws_security_group.stack-sg.id]
-  user_data              = data.template_file.bootstrap.rendered
-  key_name               = aws_key_pair.Stack_KP.key_name
-  # subnet_id              = var.subnet_ids[count.index]
-  subnet_id              = var.subnet_ids[0]
+  count                   = var.stack_controls["ec2_create"] == "Y" ? var.server_count : 0
+  ami                     = var.ami_id
+  instance_type           = var.EC2_Components["instance_type"]
+  vpc_security_group_ids  = [var.alb_bastion_sg_id]
+  user_data               = data.template_file.bootstrap.rendered
+  key_name                = "private-key-kp"
+  subnet_id               = element(var.public_subnets_id, count.index)
   root_block_device {
     volume_type           = var.EC2_Components["volume_type"]
     volume_size           = var.EC2_Components["volume_size"]
@@ -40,12 +17,7 @@ resource "aws_instance" "server" {
     encrypted             = var.EC2_Components["encrypted"]
   }
 
-  tags = {
-    Name = "Application-Server"
-  }
-
-  # tags = merge({Name = "${local.ServerPrefix != "" ? local.ServerPrefix : "Application_Server_Aut"}"}, var.resource_tags)
-  # tags = merge({Name = "${local.ServerPrefix != "" ? local.ServerPrefix : "Application_Server_Aut_"}${count.index}"}, module.CORE-INFO.all_resource_tags)  
+  tags = merge({Name = "${local.ServerPrefix != "" ? local.ServerPrefix : "Application_Server_Aut_"}${count.index}"}, var.resource_tags) 
 
 }
 
