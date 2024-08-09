@@ -16,7 +16,6 @@ module "CORE-INFO" {
 
 module "EC2-BASE" {
   count = var.stack_controls["ec2_create"] == "Y" ? 1 : 0
-
   source         = "../../../MODULES/EC2-BASE"
   ami_id         = data.aws_ami.stack_ami.id
   stack_controls = var.stack_controls

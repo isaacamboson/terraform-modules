@@ -2,48 +2,24 @@ variable "AWS_ACCESS_KEY" {}
 variable "AWS_SECRET_KEY" {}
 variable "AWS_REGION" {}
 
-
 variable "environment" {
   default = "dev"
 }
 
-variable "default_vpc_id" {
-  default = "vpc-0da071fbb2608e526"
+variable "OwnerEmail" {
+  default = "isaacamboson@gmail.com"
 }
 
 variable "system" {
   default = "Retail Reporting"
 }
 
+variable "backup" {
+  default = "yes"
+}
+
 variable "subsystem" {
   default = "CliXX"
-}
-
-variable "availability_zone" {
-  default = "us-east-1c"
-}
-
-variable "subnets_cidrs" {
-  type = list(string)
-  default = [
-    "172.31.80.0/20"
-  ]
-}
-
-# variable "instance_type" {
-#   default = "t2.micro"
-# }
-
-variable "PATH_TO_PRIVATE_KEY" {
-  default = "my_key"
-}
-
-variable "PATH_TO_PUBLIC_KEY" {
-  default = "my_key.pub"
-}
-
-variable "OwnerEmail" {
-  default = "isaacamboson@gmail.com"
 }
 
 variable "AMIS" {
@@ -53,23 +29,6 @@ variable "AMIS" {
     us-west-2 = "ami-06b94666"
     eu-west-1 = "ami-844e0bf7"
   }
-}
-
-variable "subnet" {
-  default = "subnet-0237ec1aa4ab23ba1"
-}
-
-#subnet IDs
-variable "subnet_ids" {
-  type = list(string)
-  default = [
-    "subnet-0237ec1aa4ab23ba1",
-    "subnet-009b56f7ed89b5b63",
-    "subnet-0aa7125aef0e45ea5",
-    "subnet-06014beebc5c0c2bd",
-    "subnet-0a1919939855f7719",
-    "subnet-0a42cd4d9757fb272"
-  ]
 }
 
 variable "stack_controls" {
@@ -91,8 +50,53 @@ variable "EC2_Components" {
   }
 }
 
-variable "backup" {
-  default = "yes"
+variable "vpc_cidr" {
+  type    = string
+  default = "10.1.0.0/16"
 }
 
-# variable "resource_tags" {}
+variable "project_name" {
+  type    = string
+  default = "clixx"
+}
+
+variable "availability_zone" {
+  default = [
+    "us-east-1a",
+    "us-east-1b"
+  ]
+}
+
+variable "public_subnet_cidrs" {
+  type = list(string)
+  default = [
+    "10.1.2.0/23", # 510 hosts   - bastion, load balancer
+    "10.1.4.0/23"  # 510 hosts   - bastion, load balancer
+  ]
+}
+
+variable "private_subnet_cidrs" {
+  type = list(string)
+  default = [
+    "10.1.0.0/24", # 254 hosts   - Application Server
+    "10.1.1.0/24", # 254 hosts   - Application Server
+    "10.1.8.0/22", # 1022 hosts  - RDS
+    "10.1.12.0/22" # 1022 hosts  - RDS
+  ]
+}
+
+variable "server_count" {
+  description = "number of servers to be built"
+  default = 4
+}
+
+variable "access_ports_public" {
+  description = "various ingress ports allowed on the security group for load balancer and bastion"
+  type    = list(number)
+  default = [22, 80, 443]
+}
+
+variable "access_ports_private" {
+  type    = list(number)
+  default = [22, 80, 443]
+}
