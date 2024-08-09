@@ -1,7 +1,7 @@
 
 variable "ami_id" {}
 variable "env" {}
-variable "default_vpc_id" {}
+# variable "default_vpc_id" {}
 
 variable "PATH_TO_PRIVATE_KEY" {
   default = "my_key"
@@ -31,3 +31,9 @@ variable "resource_tags" {
   type = map(string)
   default = {}
 }
+
+variable "server_count" {}
+
+variable "public_subnets_id" {}
+
+variable "alb_bastion_sg_id" {}
