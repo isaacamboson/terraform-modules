@@ -2,6 +2,7 @@ locals {
   ServerPrefix = ""
 }
 
+#Creates server instances
 resource "aws_instance" "server" {
   count                   = var.stack_controls["ec2_create"] == "Y" ? var.server_count : 0
   ami                     = var.ami_id
