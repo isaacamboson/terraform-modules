@@ -2,7 +2,9 @@ locals {
   ServerPrefix = ""
 }
 
+#--------------------------------------------------------------------------------------------------------------------------
 #security group for application load balancer and bastion servers (all in public subnets)
+#--------------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "alb_bastion_sg" {
   name   = "${var.project_name}-alb-bastion-sg"   
   vpc_id = var.vpc_main_id
@@ -36,7 +38,9 @@ resource "aws_security_group" "alb_bastion_sg" {
  tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "pub_security_grp"}"}, var.resource_tags)
 }
 
+#--------------------------------------------------------------------------------------------------------------------------
 #security group for application in private subnet
+#--------------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "private_app_sg" {
   name        = "${var.project_name}-application-sg"
   vpc_id      = var.vpc_main_id
@@ -71,7 +75,9 @@ resource "aws_security_group" "private_app_sg" {
   tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "private_security_grp"}"}, var.resource_tags)
 }
 
+#--------------------------------------------------------------------------------------------------------------------------
 #security group for ECS 
+#--------------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "ecs_sg" {
   name        = "${var.project_name}-ecs-sg"
   vpc_id      = var.vpc_main_id
@@ -106,7 +112,10 @@ resource "aws_security_group" "ecs_sg" {
   tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "ecs_security_grp"}"}, var.resource_tags)
 }
 
+
+#--------------------------------------------------------------------------------------------------------------------------
 #security group for RDS database 
+#--------------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "rds_sg" {
   name        = "${var.project_name}-rds-db-sg"
   vpc_id      = var.vpc_main_id
