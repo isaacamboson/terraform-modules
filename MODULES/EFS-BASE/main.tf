@@ -12,10 +12,6 @@ resource "aws_efs_file_system" "efs" {
   encrypted        = "true"
   tags = merge({Name  = "${local.EFSPrefix != "" ? local.EFSPrefix : "${var.project_name}_file_system"}"}, var.resource_tags)
 
-#   tags = {
-#     Name = "${var.project_name}-EFS"
-#   }
-
 }
 
 # creating the efs mount target in us-east-1a
