@@ -52,7 +52,7 @@ resource "aws_security_group" "private_app_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for app server in private subnet"
-      security_groups = [aws_security_group.alb_bastion_sg.id]
+      security_groups = [var.alb_bastion_sg_id]
       self            = true
     } 
   }
@@ -89,7 +89,7 @@ resource "aws_security_group" "ecs_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for ecs in private subnet"
-      security_groups = [aws_security_group.alb_bastion_sg.id]
+      security_groups = [var.alb_bastion_sg_id]
       self            = true
     } 
   }
@@ -127,7 +127,7 @@ resource "aws_security_group" "rds_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for RDS DB in private subnet"
-      security_groups = [aws_security_group.private_app_sg.id]
+      security_groups = [var.app_server_sg_id]
       self            = true
     } 
   }
@@ -148,4 +148,41 @@ resource "aws_security_group" "rds_sg" {
   }
 
   tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "rds_db_security_grp"}"}, var.resource_tags)
+}
+
+#--------------------------------------------------------------------------------------------------------------------------
+#security group for EFS mount targets
+#--------------------------------------------------------------------------------------------------------------------------
+resource "aws_security_group" "efs_sg" {
+  name        = "${var.project_name}-efs-sg"
+  vpc_id      = var.vpc_main_id
+  
+  dynamic "ingress" {
+    for_each          = var.efs_sg_access_ports
+    content {   
+      from_port       = ingress.value
+      to_port         = ingress.value
+      protocol        = "tcp"
+      description     = "Security group for EFS in private subnet"
+      security_groups = [var.app_server_sg_id]
+      self            = true
+    } 
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  timeouts {
+    delete = "2m"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "efs_db_security_grp"}"}, var.resource_tags)
 }
