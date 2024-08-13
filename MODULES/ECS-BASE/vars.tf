@@ -4,6 +4,16 @@ variable "environment" {}
 
 variable "app_port" {}
 
+variable "aws_lb_target_group_arn" {}
+
+variable "autoscaling_grp_arn" {}
+
+variable "desired_count" {}
+
+variable "deployment_minimum_healthy_percent" {}
+
+variable "deployment_maximum_percent" {}
+
 variable "maximum_scaling_step_size" {}
 
 variable "minimum_scaling_step_size" {}

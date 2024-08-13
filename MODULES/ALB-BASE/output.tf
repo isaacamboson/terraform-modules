@@ -9,3 +9,7 @@ output "aws_lb_listener_id" {
 output "aws_lb_target_group_id" {
   value = aws_lb_target_group.app-tg.id
 }
+
+output "aws_lb_target_group_arn" {
+  value = aws_lb_target_group.app-tg.arn
+}
