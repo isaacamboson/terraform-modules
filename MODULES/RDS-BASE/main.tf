@@ -1,5 +1,9 @@
 #creating the database for our 3-tier application
 
+locals {
+  DBPrefix = ""
+}
+
 # creating subnet group name for database creation
 resource "aws_db_subnet_group" "db_subnet_group_name" {
   name       = "${var.project_name}_db_subnet_group_${var.environment}"
@@ -22,10 +26,13 @@ resource "aws_db_instance" "app_db_instance" {
   skip_final_snapshot       = var.DB_Components["skip_final_snapshot"]
   publicly_accessible       = var.DB_Components["publicly_accessible"]
 
+  tags = merge({Name = "${local.DBPrefix != "" ? local.DBPrefix : "${var.project_name}_rds_database_"}${count.index}"}, var.resource_tags) 
+
   lifecycle {
     ignore_changes = [
       iops,
-      engine_version
+      engine_version,
+      tags
     ]
   }
 }
