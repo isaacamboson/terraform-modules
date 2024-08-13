@@ -5,7 +5,7 @@ resource "aws_db_subnet_group" "db_subnet_group_name" {
   subnet_ids = [var.db_private_subnets]
 }
 
-# intitiating database instance for clixx application
+# intitiating database instance for application
 resource "aws_db_instance" "app_db_instance" {
   count                     = var.stack_controls["rds_create_clixx"] == "Y" ? 1 : 0
   instance_class            = var.DB_Components["instance_class"]
