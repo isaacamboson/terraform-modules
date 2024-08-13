@@ -3,9 +3,9 @@ locals {
   ASG_Name  = "${var.project_name}-ASG"
 }
 
-#-----------------------------------------------------------------------------
-## Creates an ASG linked with our main VPC
-#-----------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------
+## Creates an autoscaling group for the application linked with our application loadbalancer 
+#--------------------------------------------------------------------------------------------
 
 resource "aws_autoscaling_group" "autoscaling_group" {
   name                      = "${var.project_name}_ASG"
@@ -55,9 +55,9 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   depends_on = [aws_lb.lb]
 }
 
-#-----------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 #creating Launch Template for the autoscaling group instances
-#-----------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 
 resource "aws_launch_template" "app-launch-temp" {
   count                  = var.stack_controls["ec2_create"] == "Y" ? var.server_count : 0

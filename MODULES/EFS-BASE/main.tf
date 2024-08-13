@@ -3,7 +3,7 @@ locals {
 }
 
 #----------------------------------------------------------------
-# creating the efs file system for CLIXX
+# creating the EFS (Elastic File System) for the application
 #----------------------------------------------------------------
 resource "aws_efs_file_system" "efs" {
   creation_token   = "${var.project_name}-EFS"
@@ -14,7 +14,7 @@ resource "aws_efs_file_system" "efs" {
 
 }
 
-# creating the efs mount target in us-east-1a
+# creating the efs mount target in two subnets in two AZs
 resource "aws_efs_mount_target" "efs_mount" {
     count           = length(var.efs_private_subnets_id)
     file_system_id  = aws_efs_file_system.efs.id

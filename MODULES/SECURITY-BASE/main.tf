@@ -2,6 +2,8 @@ locals {
   ServerPrefix = ""
 }
 
+#creating the various security groups needed to our various applications
+
 #--------------------------------------------------------------------------------------------------------------------------
 #security group for application load balancer and bastion servers (all in public subnets)
 #--------------------------------------------------------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+#creating the database for our 3-tier application
 
 # creating subnet group name for database creation
 resource "aws_db_subnet_group" "db_subnet_group_name" {

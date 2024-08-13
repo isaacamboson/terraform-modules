@@ -1,3 +1,5 @@
+#Creating ECS - Elastic Container Service for the application (using EC2 launch type)
+
 #creating the ECS cluster 
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "${var.project_name}-app-cluster"
