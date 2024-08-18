@@ -33,7 +33,6 @@ resource "aws_appautoscaling_target" "ecs_target" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 
-  # depends_on = [ aws_ecs_cluster.ecs_cluster, aws_ecs_service.ecs-service, aws_ecs_task_definition.ecs-def ]
 }
 
 ## Policy for CPU tracking

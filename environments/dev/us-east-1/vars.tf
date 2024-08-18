@@ -38,11 +38,6 @@ variable "device_names" {
   default = ["/dev/sdb", "/dev/sdc", "/dev/sdd", "/dev/sde", "/dev/sdf"]
 }
 
-# variable "ecs_task_execution_role" {
-#   default     = "myECSTaskExecutionRole"
-#   description = "ECS task execution role name"
-# }
-
 variable "app_image" {
   default     = "767398027423.dkr.ecr.us-east-1.amazonaws.com/clixx-repository:latest"
   description = "docker image to run in this ECS cluster"
@@ -89,7 +84,7 @@ variable "vpc_cidr" {
 
 variable "project_name" {
   type    = string
-  default = "clixx"
+  default = "manga"
 }
 
 variable "availability_zone" {
@@ -150,12 +145,8 @@ variable "rds_sg_access_ports" {
 
 variable "efs_sg_access_ports" {
   type    = list(number)
-  default = []
+  default = [2049]
 }
-
-# variable "user_data_bootstrap" {}
-
-# variable "alb_lb_dns_name" {}
 
 variable "TG_Components" {
   type = map(string)
@@ -225,21 +216,23 @@ variable "DB_Components" {
 }
 
 variable "identifier" {
-  type    = string
-  default = "wordpressdbclixx"
+  type = string
+  # default = "wordpressdbclixx"
+  default = "wordpressdbclixxjenkins"
 }
 
 variable "snapshot_identifier" {
-  type    = string
-  default = "arn:aws:rds:us-east-1:767398027423:snapshot:wordpressdbclixx-snapshot"
+  type = string
+  # default = "arn:aws:rds:us-east-1:767398027423:snapshot:wordpressdbclixx-snapshot"
+  default = "arn:aws:rds:us-east-1:767398027423:snapshot:wordpressdbclixxjenkins-snapshot"
 }
 
 variable "route53_name" {
-  type = string
-  default = "dev.clixx"  
+  type    = string
+  default = "dev.clixx"
 }
 
 variable "route53_type" {
-  type = string
-  default = "A"  
+  type    = string
+  default = "A"
 }

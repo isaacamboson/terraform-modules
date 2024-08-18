@@ -6,6 +6,5 @@
 # }
 
 output "LB_DNS" {
-    # value = aws_lb.lb.dns_name
-    value = module.ALB-BASE.alb_lb_dns_name
+  value = module.ALB-BASE.alb_lb_dns_name
 }

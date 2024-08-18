@@ -106,6 +106,7 @@ resource "aws_security_group" "ecs_sg" {
   }
 
   egress {
+    description = "Allow all egress traffic"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -177,7 +178,7 @@ resource "aws_security_group" "efs_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for EFS in private subnet"
-      security_groups = [aws_security_group.ecs_sg.id, aws_security_group.private_app_sg]
+      security_groups = [aws_security_group.ecs_sg.id, aws_security_group.private_app_sg.id]
       self            = true
     } 
   }

@@ -7,6 +7,8 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   tags = {
     Name        = "${var.project_name}-app-cluster"
   }
+
+  depends_on = [ var.aws_db_instance_depends_on ]
 }
 
 #creating the ECS task definition

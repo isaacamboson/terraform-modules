@@ -11,3 +11,4 @@ variable "ECS_Service_Components" {
 
 variable "aws_lb_target_group_arn" {}
 
+variable "aws_db_instance_depends_on" {}

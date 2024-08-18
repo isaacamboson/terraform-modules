@@ -52,7 +52,7 @@ resource "aws_autoscaling_group" "autoscaling_group" {
     propagate_at_launch = true
   }
 
-  # depends_on = [aws_lb.lb]
+  depends_on = [ var.aws_db_instance_depends_on ]
 }
 
 #---------------------------------------------------------------------------------------------
