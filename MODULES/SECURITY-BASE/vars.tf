@@ -32,7 +32,7 @@ variable "resource_tags" {
   default = {}
 }
 
-variable "alb_bastion_sg_id" {}
+# variable "alb_bastion_sg_id" {}
 
-variable "app_server_sg_id" {}
+# variable "app_server_sg_id" {}
 

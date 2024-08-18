@@ -4,3 +4,8 @@
 #   # value = [for s in data.aws_subnet.stack_sub : s.availability_zone]
 #   #value = [for s in data.aws_subnet.stack_sub : element(split("-", s.availability_zone), 2)]
 # }
+
+output "LB_DNS" {
+    # value = aws_lb.lb.dns_name
+    value = module.ALB-BASE.alb_lb_dns_name
+}

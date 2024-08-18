@@ -2,8 +2,8 @@
 
 resource "aws_lb" "lb" {
   name                             = "${var.project_name}-load-balancer"
-  subnets                          = [var.pub_subnets]
-  security_groups                  = var.lb_security_group
+  subnets                          = var.pub_subnets
+  security_groups                  = [var.lb_security_group]
   internal                         = false
   load_balancer_type               = "application"
   enable_deletion_protection       = false
@@ -39,8 +39,6 @@ resource "aws_lb_target_group" "app-tg" {
     interval            = var.TG_Components["interval"]
     matcher             = var.TG_Components["matcher"] #HTTP status code matcher for healthcheck
     path                = var.TG_Components["path"]   #Endpoint for ALB healthcheck
-    port                = var.TG_Components["path"]
+    port                = var.TG_Components["traffic_port"]
   }
-
-  depends_on = [aws_lb.lb]
 }

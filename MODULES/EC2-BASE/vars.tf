@@ -37,3 +37,5 @@ variable "server_count" {}
 variable "public_subnets_id" {}
 
 variable "alb_bastion_sg_id" {}
+
+variable "user_data_bootstrap" {}
