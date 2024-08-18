@@ -1,9 +1,9 @@
 variable "project_name" {}
 
-variable "environment" {}
+# variable "environment" {}
 
 variable "pub_subnets" {
-    type = list()
+    type = list(string)
 }
 
 variable "lb_security_group" {}

@@ -14,9 +14,9 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   min_size                  = var.ASG_Components["min_size"]
   health_check_grace_period = 300
   # vpc_zone_identifier       = flatten(["{var.private_subnet}", "${var.private_subnet_1b}"])
-  vpc_zone_identifier       = [var.asg_private_subnets]
+  vpc_zone_identifier       = var.asg_private_subnets_id
   health_check_type         = "EC2"
-  target_group_arns         = var.aws_lb_target_group_id
+  target_group_arns         = [var.aws_lb_target_group_arn]
   default_cooldown          = 300
   protect_from_scale_in     = true
 
@@ -52,7 +52,7 @@ resource "aws_autoscaling_group" "autoscaling_group" {
     propagate_at_launch = true
   }
 
-  depends_on = [aws_lb.lb]
+  # depends_on = [aws_lb.lb]
 }
 
 #---------------------------------------------------------------------------------------------
@@ -60,16 +60,16 @@ resource "aws_autoscaling_group" "autoscaling_group" {
 #---------------------------------------------------------------------------------------------
 
 resource "aws_launch_template" "app-launch-temp" {
-  count                  = var.stack_controls["ec2_create"] == "Y" ? var.server_count : 0
+  # count                  = var.stack_controls["ec2_create"] == "Y" ? var.server_count : 0
   name                   = "${var.project_name}-launch-temp"
   image_id               = var.image_id
   instance_type          = var.EC2_Components["instance_type"]
   key_name               = "private-key-kp"
-  user_data              = base64encode(var.user_data_filepath)
-  vpc_security_group_ids = [aws_security_group.ecs_sg.id]
+  user_data              = base64encode(var.ecs_user_data)
+  vpc_security_group_ids = [var.ecs_sg_id]
 
   iam_instance_profile {
-    arn = aws_iam_instance_profile.ec2_instance_role_profile.arn
+    arn = var.ec2_instance_role_profile_arn
   }
 
   monitoring {
@@ -90,7 +90,7 @@ resource "aws_launch_template" "app-launch-temp" {
   }
 
   tags = {
-    Name = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "App_Server_"}${count.index}"}, var.resource_tags)
+    Name = "${var.project_name}-LT"
   }
 }
 

@@ -7,12 +7,12 @@ locals {
 # creating subnet group name for database creation
 resource "aws_db_subnet_group" "db_subnet_group_name" {
   name       = "${var.project_name}_db_subnet_group_${var.environment}"
-  subnet_ids = [var.db_private_subnets]
+  subnet_ids = var.rds_private_subnets_id
 }
 
 # intitiating database instance for application
 resource "aws_db_instance" "app_db_instance" {
-  count                     = var.stack_controls["rds_create_clixx"] == "Y" ? 1 : 0
+  count                     = var.stack_controls["rds_create"] == "Y" ? 1 : 0
   instance_class            = var.DB_Components["instance_class"]
   allocated_storage         = var.DB_Components["allocated_storage"]
   iops                      = var.DB_Components["iops"]

@@ -14,23 +14,11 @@ output "aws_ecs_service_id" {
   value = aws_ecs_service.ecs-service.id
 }
 
-output "aws_ecs_capacity_provider_id" {
-  value = aws_ecs_capacity_provider.cas.id
+output "aws_ecs_service_name" {
+  value = aws_ecs_service.ecs-service.name
 }
 
-output "aws_ecs_cluster_capacity_providers_id" {
-  value = aws_ecs_cluster_capacity_providers.cas.id
-}
-
-output "aws_appautoscaling_target_id" {
-  value = aws_appautoscaling_target.ecs_target.id
-}
-
-output "aws_appautoscaling_policy_cpu_id" {
-  value = aws_appautoscaling_policy.ecs_cpu_policy.id
-}
-
-output "aws_appautoscaling_policy_memory_id" {
-  value = aws_appautoscaling_policy.ecs_memory_policy.id
+output "ec2_instance_role_profile_arn" {
+  value = aws_iam_instance_profile.ec2_instance_role_profile.arn
 }
 

@@ -54,7 +54,7 @@ resource "aws_security_group" "private_app_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for app server in private subnet"
-      security_groups = [var.alb_bastion_sg_id]
+      security_groups = [aws_security_group.alb_bastion_sg.id]
       self            = true
     } 
   }
@@ -75,6 +75,7 @@ resource "aws_security_group" "private_app_sg" {
   }
 
   tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "private_security_grp"}"}, var.resource_tags)
+  depends_on = [ aws_security_group.alb_bastion_sg ]
 }
 
 #--------------------------------------------------------------------------------------------------------------------------
@@ -91,9 +92,17 @@ resource "aws_security_group" "ecs_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for ecs in private subnet"
-      security_groups = [var.alb_bastion_sg_id]
+      security_groups = [aws_security_group.alb_bastion_sg.id]
       self            = true
     } 
+  }
+
+  ingress {
+    description     = "Allow ingress traffic from ALB on HTTP on ephemeral ports"
+    protocol        = "tcp"
+    from_port       = 1024
+    to_port         = 65535
+    security_groups = [aws_security_group.alb_bastion_sg.id]
   }
 
   egress {
@@ -112,6 +121,7 @@ resource "aws_security_group" "ecs_sg" {
   }
 
   tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "ecs_security_grp"}"}, var.resource_tags)
+  depends_on = [ aws_security_group.alb_bastion_sg ]
 }
 
 
@@ -129,7 +139,7 @@ resource "aws_security_group" "rds_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for RDS DB in private subnet"
-      security_groups = [var.app_server_sg_id]
+      security_groups = [aws_security_group.ecs_sg.id, aws_security_group.private_app_sg.id]
       self            = true
     } 
   }
@@ -150,6 +160,7 @@ resource "aws_security_group" "rds_sg" {
   }
 
   tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "rds_db_security_grp"}"}, var.resource_tags)
+  depends_on = [ aws_security_group.ecs_sg, aws_security_group.private_app_sg ]
 }
 
 #--------------------------------------------------------------------------------------------------------------------------
@@ -166,7 +177,7 @@ resource "aws_security_group" "efs_sg" {
       to_port         = ingress.value
       protocol        = "tcp"
       description     = "Security group for EFS in private subnet"
-      security_groups = [var.app_server_sg_id]
+      security_groups = [aws_security_group.ecs_sg.id, aws_security_group.private_app_sg]
       self            = true
     } 
   }
@@ -187,4 +198,5 @@ resource "aws_security_group" "efs_sg" {
   }
 
   tags = merge({Name  = "${local.ServerPrefix != "" ? local.ServerPrefix : "efs_db_security_grp"}"}, var.resource_tags)
+  depends_on = [ aws_security_group.ecs_sg, aws_security_group.private_app_sg ]
 }
