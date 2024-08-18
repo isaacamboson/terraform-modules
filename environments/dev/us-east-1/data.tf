@@ -23,15 +23,9 @@ data "aws_ami" "stack_ami" {
 }
 
 data "aws_ami" "ecs-optimized" {
-  owners      = ["679593333241"]
-  # name_regex  = "^Galaxys Amazon ECS-Optimized Amazon Linux 2 (AL2)*"
-  # name_regex  = "^Amazon ECS-Optimized Amazon Linux 2 AMI*"
-  # most_recent = true
-
-  filter {
-    name   = "image-id"
-    values = ["ami-02e926f32f5248569"]
-  }
+  owners = ["767397882686"]
+  name_regex = "^ami-stack-activiti-ecs-1.0*"
+  most_recent = true
 
   filter {
     name   = "root-device-type"
@@ -42,7 +36,6 @@ data "aws_ami" "ecs-optimized" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-
 }
 
 data "aws_secretsmanager_secret_version" "creds" {

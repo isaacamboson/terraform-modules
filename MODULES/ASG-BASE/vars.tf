@@ -35,9 +35,9 @@ variable "server_count" {}
 
 variable "ec2_instance_role_profile_arn" {}
 
-# variable "aws_ecs_cluster_name" {}
-
 variable "ecs_sg_id" {}
+
+variable "aws_db_instance_depends_on" {}
 
 
 

@@ -5,3 +5,7 @@ output "aws_db_subnet_group_id" {
 output "aws_db_instance_id" {
   value = aws_db_instance.app_db_instance.*.id
 }
+
+output "aws_db_instance" {
+  value = aws_db_instance.app_db_instance
+}

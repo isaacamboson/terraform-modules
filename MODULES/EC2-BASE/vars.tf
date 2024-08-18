@@ -1,7 +1,6 @@
 
 variable "ami_id" {}
 variable "env" {}
-# variable "default_vpc_id" {}
 
 variable "PATH_TO_PRIVATE_KEY" {
   default = "my_key"

@@ -1,5 +1,5 @@
 locals {
-  ServerPrefix = ""
+  ServerPrefix = "Bastion_Server"
 
   db_creds = jsondecode(
     data.aws_secretsmanager_secret_version.creds.secret_string
@@ -63,6 +63,7 @@ module "ASG-BASE" {
   ecs_user_data                 = base64encode(data.template_file.ecs_user_data.rendered)
   ecs_sg_id                     = module.SECURITY-BASE.ecs_sg_id
   device_names                  = var.device_names
+  aws_db_instance_depends_on    = module.RDS-BASE.aws_db_instance
   aws_lb_target_group_arn       = module.ALB-BASE.aws_lb_target_group_arn
   ec2_instance_role_profile_arn = module.ECS-BASE.ec2_instance_role_profile_arn
   resource_tags                 = module.CORE-INFO.all_resource_tags
@@ -83,25 +84,23 @@ module "BASTION-BASE" {
 }
 
 module "ECS-BASE" {
-  source                        = "../../../MODULES/ECS-BASE"
-  project_name                  = var.project_name
-  environment                   = var.environment
-  container_definitions         = data.template_file.clixx-app.rendered
-  ECS_Service_Components        = var.ECS_Service_Components
-  # ECS_Capacity_Components       = var.ECS_Capacity_Components
-  # ECS_Appautoscaling_Components = var.ECS_Appautoscaling_Components
-  aws_lb_target_group_arn       = module.ALB-BASE.aws_lb_target_group_arn
-  # autoscaling_grp_arn           = module.ASG-BASE.autoscaling_grp_arn
+  source                      = "../../../MODULES/ECS-BASE"
+  project_name                = var.project_name
+  environment                 = var.environment
+  container_definitions       = data.template_file.clixx-app.rendered
+  ECS_Service_Components      = var.ECS_Service_Components
+  aws_lb_target_group_arn     = module.ALB-BASE.aws_lb_target_group_arn
+  aws_db_instance_depends_on  = module.RDS-BASE.aws_db_instance
 }
 
 module "ECS-CAPACITY-BASE" {
-  source = "../../../MODULES/ECS-CAPACITY-BASE"
-  project_name = var.project_name
-  environment = var.environment
-  autoscaling_grp_arn = module.ASG-BASE.autoscaling_grp_arn
-  aws_ecs_cluster_name = module.ECS-BASE.aws_ecs_cluster_name
-  aws_ecs_service_name = module.ECS-BASE.aws_ecs_service_name
-  ECS_Capacity_Components = var.ECS_Capacity_Components
+  source                        = "../../../MODULES/ECS-CAPACITY-BASE"
+  project_name                  = var.project_name
+  environment                   = var.environment
+  autoscaling_grp_arn           = module.ASG-BASE.autoscaling_grp_arn
+  aws_ecs_cluster_name          = module.ECS-BASE.aws_ecs_cluster_name
+  aws_ecs_service_name          = module.ECS-BASE.aws_ecs_service_name
+  ECS_Capacity_Components       = var.ECS_Capacity_Components
   ECS_Appautoscaling_Components = var.ECS_Appautoscaling_Components
 }
 
@@ -118,11 +117,11 @@ module "RDS-BASE" {
 }
 
 module "route53" {
-  source = "../../../MODULES/ROUTE53-BASE"
-  zone_id = data.aws_route53_zone.stack_isaac_zone.id
-  route53_name = var.route53_name
-  route53_type = var.route53_type
+  source          = "../../../MODULES/ROUTE53-BASE"
+  zone_id         = data.aws_route53_zone.stack_isaac_zone.id
+  route53_name    = var.route53_name
+  route53_type    = var.route53_type
   alb_lb_dns_name = module.ALB-BASE.alb_lb_dns_name
-  alb_lb_zone_id = module.ALB-BASE.alb_lb_zone_id
+  alb_lb_zone_id  = module.ALB-BASE.alb_lb_zone_id
 }
 
