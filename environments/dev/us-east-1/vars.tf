@@ -84,7 +84,7 @@ variable "vpc_cidr" {
 
 variable "project_name" {
   type    = string
-  default = "manga"
+  default = "port-ave"
 }
 
 variable "availability_zone" {

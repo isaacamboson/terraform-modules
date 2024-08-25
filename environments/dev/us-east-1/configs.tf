@@ -18,8 +18,8 @@ data "template_file" "ecs_user_data" {
   vars = {
     ecs_cluster_name = "${var.project_name}-app-cluster"
 
-    LB_DNS    = module.ALB-BASE.alb_lb_dns_name
-    
+    LB_DNS = module.ALB-BASE.alb_lb_dns_name
+
     #updating rds instance / database with the new load balancer dns from terraform output
     rds_mysql_ept = local.db_creds.rds_ept #var.rds_ept
     rds_mysql_usr = local.db_creds.rds_usr #var.rds_usr
