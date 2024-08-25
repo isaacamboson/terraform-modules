@@ -2,14 +2,6 @@
 variable "ami_id" {}
 variable "env" {}
 
-variable "PATH_TO_PRIVATE_KEY" {
-  default = "my_key"
-}
-
-variable "PATH_TO_PUBLIC_KEY" {
-  default = "my_key.pub"
-}
-
 #subnet IDs
 variable "subnet_ids" {
   type = list(string)
@@ -38,3 +30,7 @@ variable "public_subnets_id" {}
 variable "alb_bastion_sg_id" {}
 
 variable "user_data_bootstrap" {}
+
+# variable "availability_zone" {
+#   type = list(string)
+# }
