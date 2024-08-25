@@ -81,7 +81,7 @@ module "BASTION-BASE" {
   user_data_bootstrap = data.template_file.bastion_s3_cp_bootstrap.rendered
   alb_bastion_sg_id   = module.SECURITY-BASE.alb_bastion_sg_id
   env                 = var.environment
-  availability_zone   = var.availability_zone
+  # availability_zone   = var.availability_zone
   public_subnets_id   = module.VPC-BASE.public_subnets_id
   resource_tags       = module.CORE-INFO.all_resource_tags
 }
