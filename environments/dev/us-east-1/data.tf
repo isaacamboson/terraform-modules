@@ -27,6 +27,19 @@ data "aws_ami" "ecs-optimized" {
   name_regex = "^ami-stack-activiti-ecs-1.0*"
   most_recent = true
 
+  # owners      = ["amazon"]
+  # most_recent = true
+
+  # filter {
+  #   name   = "owner-alias"
+  #   values = ["amazon"]
+  # }
+
+  # filter {
+  #   name   = "name"
+  #   values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
+  # }
+
   filter {
     name   = "root-device-type"
     values = ["ebs"]
